@@ -5,7 +5,7 @@ import com.recommender.recommender_service.feignclients.UserFeignClient;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Repository;
+
 import org.springframework.stereotype.Service;
 
 @Service
