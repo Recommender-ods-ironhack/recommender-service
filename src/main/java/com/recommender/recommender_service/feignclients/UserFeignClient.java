@@ -15,6 +15,4 @@ public interface UserFeignClient {
     @GetMapping("/api/user/{id}")
     UserDTO getUserById(@PathVariable Long id);
 
-    @GetMapping("/api/clothing-item/{id}")
-    ClothingItemDTO getItemById(@PathVariable Long id);
 }

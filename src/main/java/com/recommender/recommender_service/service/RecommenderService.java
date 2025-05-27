@@ -2,6 +2,7 @@ package com.recommender.recommender_service.service;
 
 import com.recommender.recommender_service.DTOs.ClothingItemDTO;
 import com.recommender.recommender_service.DTOs.UserDTO;
+import com.recommender.recommender_service.feignclients.ItemFeignClient;
 import com.recommender.recommender_service.feignclients.UserFeignClient;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -14,13 +15,14 @@ import org.springframework.stereotype.Service;
 public class RecommenderService {
 
      private final UserFeignClient userFeignClient;
+    private final ItemFeignClient itemFeignClient;
 
      public UserDTO getUserById(Long id){
        return  userFeignClient.getUserById(id);
      }
 
      public ClothingItemDTO getItemById(Long id){
-         return userFeignClient.getItemById(id);
+         return itemFeignClient.getItemById(id);
      }
 
 }
