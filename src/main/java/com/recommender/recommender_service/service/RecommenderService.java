@@ -1,5 +1,6 @@
 package com.recommender.recommender_service.service;
 
+import com.recommender.recommender_service.DTOs.ClothingItemDTO;
 import com.recommender.recommender_service.DTOs.UserDTO;
 import com.recommender.recommender_service.feignclients.UserFeignClient;
 import lombok.RequiredArgsConstructor;
@@ -14,14 +15,12 @@ public class RecommenderService {
 
      private final UserFeignClient userFeignClient;
 
-     public ResponseEntity<?> getUserById(Long id){
-         try{
-             UserDTO user = userFeignClient.getUserById(id);
-             return ResponseEntity.ok(user);
-         } catch (Exception e) {
-             //TODO crear excepcion
-             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-         }
+     public UserDTO getUserById(Long id){
+       return  userFeignClient.getUserById(id);
+     }
+
+     public ClothingItemDTO getItemById(Long id){
+         return userFeignClient.getItemById(id);
      }
 
 }

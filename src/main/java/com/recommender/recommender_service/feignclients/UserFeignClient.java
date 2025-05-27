@@ -1,5 +1,6 @@
 package com.recommender.recommender_service.feignclients;
 
+import com.recommender.recommender_service.DTOs.ClothingItemDTO;
 import com.recommender.recommender_service.DTOs.UserDTO;
 import org.apache.catalina.User;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -13,4 +14,7 @@ import java.util.List;
 public interface UserFeignClient {
     @GetMapping("/api/user/{id}")
     UserDTO getUserById(@PathVariable Long id);
+
+    @GetMapping("/api/clothing-item/{id}")
+    ClothingItemDTO getItemById(@PathVariable Long id);
 }
