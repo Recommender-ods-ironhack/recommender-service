@@ -27,6 +27,13 @@ public class RecommenderService {
      private final UserFeignClient userFeignClient;
     private final ItemFeignClient itemFeignClient;
 
+    private double calculateDiscountedPrice(double originalPrice, double discountRate) {
+        BigDecimal original = BigDecimal.valueOf(originalPrice);
+        BigDecimal discounted = original.multiply(BigDecimal.valueOf(1 - discountRate))
+                .setScale(2, RoundingMode.HALF_UP);
+        return discounted.doubleValue();
+    }
+
      public UserDTO getUserById(Long id){
        return  userFeignClient.getUserById(id);
      }
@@ -40,16 +47,9 @@ public class RecommenderService {
      }
 
     public List<ClothingItemDTO> getFilteredClothingItems(
-            ESize size, List<EStyle> styles, String color, Double maxPrice) {
+            ESize size, List<EStyle> styles,  Double maxPrice, String color) {
         return itemFeignClient.getFilteredClothingItems(
-                size, styles, color, maxPrice);
-    }
-
-    private double calculateDiscountedPrice(double originalPrice, double discountRate) {
-        BigDecimal original = BigDecimal.valueOf(originalPrice);
-        BigDecimal discounted = original.multiply(BigDecimal.valueOf(1 - discountRate))
-                .setScale(2, RoundingMode.HALF_UP);
-        return discounted.doubleValue();
+                size, styles,maxPrice, color);
     }
 
     public List<DiscountedItemDTO>  getDiscountedItems(){
@@ -74,8 +74,9 @@ public class RecommenderService {
        return discountedItems;
     }
 
-    public List<RecommendedItemDTO> getRecommendedItems(Long id,String color, Double maxPrice){
-
+    public List<RecommendedItemDTO> getRecommendedItems(Long id, Double maxPrice, String color){
+        System.out.println(maxPrice + " = max price service getRecommendedItems");
+        System.out.println(color + " = color service getRecommendedItems");
          UserDTO user= getUserById(id);
          List<EStyle> prefStyles = user.getStyles();
          List<ESize> prefSizes = user.getSizes();
@@ -91,7 +92,9 @@ public class RecommenderService {
         //Por cada talla preferida del user se buscar las recomendaciones
         List<ClothingItemDTO> allSizeRecommendedItems = new ArrayList<>();
          for(ESize size: prefSizes){
-             List<ClothingItemDTO> items = getFilteredClothingItems(size, prefStyles, color, maxPrice);
+             System.out.println(maxPrice + " = max price");
+             System.out.println(color + " = color");
+             List<ClothingItemDTO> items = getFilteredClothingItems(size, prefStyles, maxPrice, color );
              allSizeRecommendedItems.addAll(items);
          }
 
@@ -120,10 +123,12 @@ public class RecommenderService {
         return recommendedItems;
     }
 
-    public RecommendationDTO respondRecommendation(Long id,String color, Double maxPrice){
+    public RecommendationDTO respondRecommendation(Long id, Double maxPrice ,String color){
          RecommendationDTO recommendation = new RecommendationDTO();
+        System.out.println( color + " color respondRecommendation");
+        System.out.println( maxPrice + " maxPrice respondRecommendation");
 
-         var items = getRecommendedItems(id, color, maxPrice);
+         var items = getRecommendedItems(id, maxPrice, color );
 
          recommendation.setUser(getUserById(id));
 

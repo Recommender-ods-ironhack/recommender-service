@@ -23,7 +23,8 @@ public interface ItemFeignClient {
     List<ClothingItemDTO> getFilteredClothingItems(
             @RequestParam(required = false) ESize size,
             @RequestParam(required = false) List<EStyle> styles,
-            @RequestParam(required = false) String color,
-            @RequestParam(required = false) Double maxPrice);
+            @RequestParam(required = false) Double maxPrice,
+            @RequestParam(required = false) String color);
+
 }
 

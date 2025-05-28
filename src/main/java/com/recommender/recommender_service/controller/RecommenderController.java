@@ -69,7 +69,7 @@ public class RecommenderController {
     ) {
 
         try{
-            List<ClothingItemDTO> items = recommenderService.getFilteredClothingItems(size, styles, color, maxPrice);
+            List<ClothingItemDTO> items = recommenderService.getFilteredClothingItems(size, styles, maxPrice,color );
             return ResponseEntity.ok(items);
         }catch(FeignException e){
             String errorMessage = e.contentUTF8();
@@ -90,9 +90,12 @@ public class RecommenderController {
     }
 
     @GetMapping("/items/filtered/{id}")
-    public ResponseEntity<?> respondRecommendation(@PathVariable Long id, @RequestParam(required = false) String color, @RequestParam(required = false) Double price){
+    public ResponseEntity<?> respondRecommendation(@PathVariable Long id, @RequestParam(required = false) Double maxPrice, @RequestParam(required = false) String color){
+
         try {
-            RecommendationDTO reponse = recommenderService.respondRecommendation(id, color, price);
+            System.out.println(maxPrice + " MaxPrice controller");
+            System.out.println(color + " color controller");
+            RecommendationDTO reponse = recommenderService.respondRecommendation(id, maxPrice,color );
             return ResponseEntity.ok(reponse);
 
         }catch (Exception e) {
