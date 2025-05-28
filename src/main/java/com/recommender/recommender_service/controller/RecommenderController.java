@@ -4,14 +4,20 @@ import com.recommender.recommender_service.DTOs.ESize;
 import com.recommender.recommender_service.DTOs.EStyle;
 import com.recommender.recommender_service.DTOs.request.ClothingItemDTO;
 import com.recommender.recommender_service.DTOs.request.UserDTO;
+import com.recommender.recommender_service.DTOs.response.RecommendationDTO;
+import com.recommender.recommender_service.DTOs.response.RecommendedItemDTO;
 import com.recommender.recommender_service.service.RecommenderService;
 import feign.FeignException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api")
@@ -43,7 +49,7 @@ public class RecommenderController {
         }
     }
 
-    @GetMapping("/item/excess-stock")
+    @GetMapping("/items/excess-stock")
     public ResponseEntity<?> getExcessStockItems(){
         try{
             List<ClothingItemDTO> excessItems = recommenderService.getExcessStockItems();
@@ -54,7 +60,7 @@ public class RecommenderController {
         }
     }
 
-    @GetMapping("/recommendation")
+    @GetMapping("/items/filtered")
     public ResponseEntity<?> getFilteredClothingItems(
             @RequestParam(required = false) ESize size,
             @RequestParam(required = false) List<EStyle> styles,
@@ -72,7 +78,7 @@ public class RecommenderController {
 
     }
 
-    @GetMapping("/discount")
+    @GetMapping("items/discount")
     public ResponseEntity<?> getDiscountedItems() {
         try {
             var discItems = recommenderService.getDiscountedItems();
@@ -82,4 +88,17 @@ public class RecommenderController {
             return ResponseEntity.status(e.status()).body(errorMessage);
         }
     }
+
+    @GetMapping("/items/filtered/{id}")
+    public ResponseEntity<?> respondRecommendation(@PathVariable Long id, @RequestParam(required = false) String color, @RequestParam(required = false) Double price){
+        try {
+            RecommendationDTO reponse = recommenderService.respondRecommendation(id, color, price);
+            return ResponseEntity.ok(reponse);
+
+        }catch (Exception e) {
+            return ResponseEntity.internalServerError().body("Error recommending items: " + e.getMessage());
+            }
+
+    }
+
 }

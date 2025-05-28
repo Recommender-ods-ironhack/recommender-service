@@ -11,7 +11,8 @@ import java.util.Set;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class DiscountedItemRespDTO {
+public class DiscountedItemDTO {
+        private Long Id;
 
         private String name;
 
