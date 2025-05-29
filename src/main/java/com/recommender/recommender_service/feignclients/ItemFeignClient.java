@@ -19,7 +19,7 @@ public interface ItemFeignClient {
     @GetMapping("/api/clothing-item/excess-stock")
     List<ClothingItemDTO> getExcessStockItems();
 
-    @GetMapping("/api/clothing-item/recommendation")
+    @GetMapping("/api/clothing-item/filtered")
     List<ClothingItemDTO> getFilteredClothingItems(
             @RequestParam(required = false) ESize size,
             @RequestParam(required = false) List<EStyle> styles,

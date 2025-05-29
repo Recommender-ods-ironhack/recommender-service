@@ -27,7 +27,7 @@ public class RecommenderService {
      private final UserFeignClient userFeignClient;
     private final ItemFeignClient itemFeignClient;
 
-    private double calculateDiscountedPrice(double originalPrice, double discountRate) {
+    public double calculateDiscountedPrice(double originalPrice, double discountRate) {
         BigDecimal original = BigDecimal.valueOf(originalPrice);
         BigDecimal discounted = original.multiply(BigDecimal.valueOf(1 - discountRate))
                 .setScale(2, RoundingMode.HALF_UP);
