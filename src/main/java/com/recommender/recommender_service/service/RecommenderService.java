@@ -47,9 +47,9 @@ public class RecommenderService {
      }
 
     public List<ClothingItemDTO> getFilteredClothingItems(
-            ESize size, List<EStyle> styles,  Double maxPrice, String color) {
+            String name, ESize size, List<EStyle> styles, String color, Integer maxPrice ) {
         return itemFeignClient.getFilteredClothingItems(
-                size, styles,maxPrice, color);
+                name,  size, styles, color, maxPrice);
     }
 
     public List<DiscountedItemDTO>  getDiscountedItems(){
@@ -74,9 +74,8 @@ public class RecommenderService {
        return discountedItems;
     }
 
-    public List<RecommendedItemDTO> getRecommendedItems(Long id, Double maxPrice, String color){
-        System.out.println(maxPrice + " = max price service getRecommendedItems");
-        System.out.println(color + " = color service getRecommendedItems");
+    public List<RecommendedItemDTO> getRecommendedItems(Long id,String name, Integer maxPrice, String color){
+
          UserDTO user= getUserById(id);
          List<EStyle> prefStyles = user.getStyles();
          List<ESize> prefSizes = user.getSizes();
@@ -92,9 +91,7 @@ public class RecommenderService {
         //Por cada talla preferida del user se buscar las recomendaciones
         List<ClothingItemDTO> allSizeRecommendedItems = new ArrayList<>();
          for(ESize size: prefSizes){
-             System.out.println(maxPrice + " = max price");
-             System.out.println(color + " = color");
-             List<ClothingItemDTO> items = getFilteredClothingItems(size, prefStyles, maxPrice, color );
+             List<ClothingItemDTO> items = getFilteredClothingItems(name, size, prefStyles, color, maxPrice );
              allSizeRecommendedItems.addAll(items);
          }
 
@@ -123,12 +120,9 @@ public class RecommenderService {
         return recommendedItems;
     }
 
-    public RecommendationDTO respondRecommendation(Long id, Double maxPrice ,String color){
+    public RecommendationDTO respondRecommendation(Long id, String name, String color,Integer maxPrice){
          RecommendationDTO recommendation = new RecommendationDTO();
-        System.out.println( color + " color respondRecommendation");
-        System.out.println( maxPrice + " maxPrice respondRecommendation");
-
-         var items = getRecommendedItems(id, maxPrice, color );
+         var items = getRecommendedItems(id, name, maxPrice, color);
 
          recommendation.setUser(getUserById(id));
 

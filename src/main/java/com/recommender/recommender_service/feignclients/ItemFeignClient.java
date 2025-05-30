@@ -21,10 +21,12 @@ public interface ItemFeignClient {
 
     @GetMapping("/api/clothing-item/filtered")
     List<ClothingItemDTO> getFilteredClothingItems(
+            @RequestParam(required = false) String name,
             @RequestParam(required = false) ESize size,
             @RequestParam(required = false) List<EStyle> styles,
-            @RequestParam(required = false) Double maxPrice,
-            @RequestParam(required = false) String color);
+            @RequestParam(required = false) String color,
+            @RequestParam(required = false) Integer maxPrice
+    );
 
 }
 
